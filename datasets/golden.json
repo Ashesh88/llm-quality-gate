@@ -1,0 +1,377 @@
+﻿[
+    {
+        "id":  "GOLDEN-001",
+        "category":  "REFUND",
+        "input":  "I purchased the Starter plan 4 days ago. Can I get a full refund?",
+        "expected_output":  "Yes, customers on the Starter plan are eligible for a 100% full refund within 14 calendar days of initial purchase under our money-back guarantee.",
+        "context":  [
+                        "All new customers on the Starter ($29/month) and Professional ($99/month) plans are eligible for a 100% full refund within 14 calendar days of their initial purchase, no questions asked.",
+                        "Refunds are credited back to the original payment method within 5-7 business days."
+                    ],
+        "intent":  "BILLING_REFUND",
+        "urgency":  "MEDIUM",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-002",
+        "category":  "REFUND",
+        "input":  "Can I get a refund on my Enterprise setup fee from 2 months ago?",
+        "expected_output":  "Enterprise plans with custom SLA agreements and one-time setup fees are strictly non-refundable.",
+        "context":  [
+                        "Non-refundable: Enterprise plans with custom SLA agreements, one-time onboarding setup fees, and usage-based overage charges.",
+                        "For cancellations after 14 days, service remains active until the end of the billing period; no partial or pro-rated cash refunds are issued."
+                    ],
+        "intent":  "BILLING_REFUND",
+        "urgency":  "MEDIUM",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-003",
+        "category":  "PRICING",
+        "input":  "How much does the Starter plan cost and how many seats do I get?",
+        "expected_output":  "The Starter Plan costs $29/month (or $290/year) and includes 5 active team seats and 10,000 monthly workflow executions.",
+        "context":  [
+                        "Starter Plan ($29/month or $290/year) includes 5 active team seats, 10,000 monthly automation workflow executions, and standard email support.",
+                        "Rate limit: 60 requests per minute on API endpoints."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-004",
+        "category":  "PRICING",
+        "input":  "What are the rate limits and features included in the Professional Plan?",
+        "expected_output":  "The Professional Plan is $99/month, offers 25 active team seats, 100,000 executions, priority support within 4 hours, CRM integrations, and an API rate limit of 300 requests per minute.",
+        "context":  [
+                        "Professional Plan ($99/month or $990/year) includes 25 active team seats, 100,000 monthly automation workflow executions, priority email/Slack support within 4 business hours, and rate limit of 300 requests per minute."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-005",
+        "category":  "INCIDENT",
+        "input":  "URGENT: Our production webhooks are failing with 500 internal server errors across all endpoints!",
+        "expected_output":  "This has been classified as a P1 Critical Incident. A high-priority ticket has been created, our engineering team was alerted via Slack, and first response will be within 15 minutes.",
+        "context":  [
+                        "If customers report 500 Internal Server Error, Connection Timeout, or failing webhooks, our engineering team flags this as a P1 (High Urgency) incident.",
+                        "Priority 1 (Critical Outage): First response \u003c 15 minutes, resolution target \u003c 2 hours. Notification dispatched to #incident-alerts."
+                    ],
+        "intent":  "TECHNICAL_BUG",
+        "urgency":  "HIGH",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-006",
+        "category":  "AUTH",
+        "input":  "Our API requests are returning 401 Unauthorized with expired JWT tokens. How do we fix this?",
+        "expected_output":  "Clients must refresh expired JWT tokens using the /auth/refresh endpoint with a valid refresh token. API keys can also be rotated with zero downtime in Developer Dashboard.",
+        "context":  [
+                        "Expired JWT tokens return 401 Unauthorized. Clients must refresh tokens using the /auth/refresh endpoint with their valid refresh token.",
+                        "API keys can be rolled with zero downtime via the Developer Dashboard \u003e Security \u003e Rotate Key."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-007",
+        "category":  "PRICING",
+        "input":  "Do you offer an on-premise deployment option?",
+        "expected_output":  "Yes, self-hosted on-premise deployment is available exclusively on the Enterprise Plan, which starts at $499/month.",
+        "context":  [
+                        "Enterprise Plan (Custom Pricing - starts at $499/month): Unlimited seats and workflow executions, 99.9% uptime SLA, 24/7 Phone/WhatsApp support, and self-hosted on-premise deployment option available."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-008",
+        "category":  "INCIDENT",
+        "input":  "Database connection pool timeout occurred during night batch processing.",
+        "expected_output":  "A technical incident ticket has been recorded with high priority and our engineering on-call team alerted for investigation.",
+        "context":  [
+                        "P1 - Critical: Production down, webhook loss, database unavailable. Response target: \u003c 15 mins. Escalated to on-call Slack.",
+                        "An incident ticket MUST be filed in Jira/CRM under INCIDENT_TECHNICAL with priority HIGH."
+                    ],
+        "intent":  "TECHNICAL_BUG",
+        "urgency":  "HIGH",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-009",
+        "category":  "REFUND",
+        "input":  "How long will it take for my refund to show up in my bank account after approval?",
+        "expected_output":  "Refunds are credited back to the original payment method within 5-7 business days after approval.",
+        "context":  [
+                        "Refunds are credited back to the original payment method (Credit Card, Debit Card, or UPI) within 5-7 business days after approval."
+                    ],
+        "intent":  "BILLING_REFUND",
+        "urgency":  "MEDIUM",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-010",
+        "category":  "SLA",
+        "input":  "What is the guaranteed response time for general inquiries vs critical outages?",
+        "expected_output":  "For Priority 1 Critical Outages the first response is under 15 minutes. For Priority 3 General Queries the first response SLA is within 24 business hours.",
+        "context":  [
+                        "Priority 1 (Critical Outage): First response \u003c 15 minutes, resolution target \u003c 2 hours.",
+                        "Priority 3 (General Query / How-to): First response \u003c 24 hours."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-011",
+        "category":  "SALES",
+        "input":  "We have 80 engineers and need a custom plan with dedicated CSM and SOC2 compliance.",
+        "expected_output":  "Our Enterprise plan accommodates large teams with unlimited seats, custom pricing starting at $499/mo, 99.9% uptime SLA, and dedicated Customer Success Manager.",
+        "context":  [
+                        "Enterprise Plan (Custom Pricing - starts at $499/month): Unlimited seats, Dedicated Customer Success Manager, 99.9% uptime SLA, 24/7 emergency escalation."
+                    ],
+        "intent":  "SALES",
+        "urgency":  "MEDIUM",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-012",
+        "category":  "REFUND",
+        "input":  "I was overcharged on my annual invoice because an expired coupon wasn\u0027t applied.",
+        "expected_output":  "We apologize for the overcharge. A billing ticket has been created to reconcile your invoice and refund the difference if applicable.",
+        "context":  [
+                        "An automated support ticket must be generated with category BILLING_REFUND to trigger payment gateway reconciliation.",
+                        "Refunds are credited back to the original payment method within 5-7 business days after approval."
+                    ],
+        "intent":  "BILLING_REFUND",
+        "urgency":  "MEDIUM",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-013",
+        "category":  "SECURITY",
+        "input":  "Can I rotate our production API key without causing downtime for our live integrations?",
+        "expected_output":  "Yes, API keys can be rolled with zero downtime via the Developer Dashboard \u003e Security \u003e Rotate Key.",
+        "context":  [
+                        "API keys can be rolled with zero downtime via the Developer Dashboard \u003e Security \u003e Rotate Key."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-014",
+        "category":  "INCIDENT",
+        "input":  "Our webhook listeners are reporting broken connection reset errors on your us-east cluster.",
+        "expected_output":  "A technical incident ticket has been dispatched to engineering with high priority and Slack alert posted.",
+        "context":  [
+                        "If customers report 500 Internal Server Error, Connection Timeout, or failing webhooks, our engineering team flags this as a P1 (High Urgency) incident.",
+                        "The engineering team on-call must be notified immediately via the #incident-alerts Slack channel."
+                    ],
+        "intent":  "TECHNICAL_BUG",
+        "urgency":  "HIGH",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-015",
+        "category":  "PRICING",
+        "input":  "What happens if we exceed the 10,000 executions limit on the Starter plan?",
+        "expected_output":  "Additional usage results in usage-based overage charges, or you can seamlessly upgrade to the Professional plan for 100,000 monthly executions.",
+        "context":  [
+                        "Starter Plan includes 10,000 monthly automation workflow executions.",
+                        "Usage-based overage charges apply for extra executions beyond plan allocation.",
+                        "Professional Plan includes 100,000 monthly automation workflow executions."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-016",
+        "category":  "REFUND",
+        "input":  "I am on the Pro plan and canceled on day 10. Am I entitled to money back?",
+        "expected_output":  "Yes, because cancellation occurred within the initial 14 calendar days, you qualify for our 100% money-back guarantee.",
+        "context":  [
+                        "All new customers on the Starter ($29/month) and Professional ($99/month) plans are eligible for a 100% full refund within 14 calendar days of their initial purchase, no questions asked."
+                    ],
+        "intent":  "BILLING_REFUND",
+        "urgency":  "MEDIUM",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-017",
+        "category":  "SLA",
+        "input":  "What is the response target for a Priority 2 degraded performance ticket?",
+        "expected_output":  "Priority 2 (High / Degraded Performance) incidents have a guaranteed first response target of under 1 hour.",
+        "context":  [
+                        "Priority 2 (High / Degraded Performance): First response \u003c 1 hour."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-018",
+        "category":  "SUPPORT",
+        "input":  "Where can I configure webhook CRM sync for Salesforce and HubSpot?",
+        "expected_output":  "Custom CRM sync with Salesforce and HubSpot is available on the Professional plan ($99/month) and Enterprise plans.",
+        "context":  [
+                        "Professional Plan ($99/month) includes Webhooks, custom CRM sync (HubSpot, Salesforce, Jira)."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-019",
+        "category":  "INCIDENT",
+        "input":  "Our payment webhook handler is completely down and throwing errors on checkout.",
+        "expected_output":  "This incident has been logged with HIGH priority, a ticket created, and emergency Slack notification triggered.",
+        "context":  [
+                        "If customers report 500 Internal Server Error, Connection Timeout, or failing webhooks, our engineering team flags this as a P1 incident.",
+                        "An incident ticket MUST be filed in Jira/CRM under INCIDENT_TECHNICAL with priority HIGH."
+                    ],
+        "intent":  "TECHNICAL_BUG",
+        "urgency":  "HIGH",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-020",
+        "category":  "REFUND",
+        "input":  "Do you offer pro-rated refunds if I cancel after 40 days?",
+        "expected_output":  "No partial or pro-rated cash refunds are issued after 14 days unless an outage caused by our infrastructure breached SLA commitments.",
+        "context":  [
+                        "For cancellations after 14 days, service remains active until the end of the billing period; no partial or pro-rated cash refunds are issued unless an outage caused by our infrastructure exceeded SLA commitments."
+                    ],
+        "intent":  "BILLING_REFUND",
+        "urgency":  "MEDIUM",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-021",
+        "category":  "PRICING",
+        "input":  "Can I purchase the Starter plan on an annual billing cycle?",
+        "expected_output":  "Yes, the Starter plan is available annually at $290/year, offering a discount over the monthly $29/month billing.",
+        "context":  [
+                        "Starter Plan ($29/month or $290/year) includes 5 active team seats and 10,000 monthly automation workflow executions."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-022",
+        "category":  "AUTH",
+        "input":  "Which endpoint should we call when our access token expires?",
+        "expected_output":  "Clients must call the /auth/refresh endpoint with their valid refresh token to obtain a new access token.",
+        "context":  [
+                        "Expired JWT tokens return 401 Unauthorized. Clients must refresh tokens using the /auth/refresh endpoint with their valid refresh token."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-023",
+        "category":  "SECURITY",
+        "input":  "What is the policy regarding user passwords and sensitive payment data?",
+        "expected_output":  "Customer PII, including credit cards and passwords, must never be logged or exposed in responses. Sensitive data is protected under strict confidentiality policies.",
+        "context":  [
+                        "Customer PII, including credit card numbers, passwords, OTPs, and private cryptographic keys, MUST NEVER be logged in plain text or echoed in chat responses.",
+                        "Customer support representatives and automated agents must politely refuse requests to retrieve or expose other customers\u0027 personal identification numbers."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-024",
+        "category":  "INCIDENT",
+        "input":  "Server crash: Worker nodes are restarting continuously after the latest release.",
+        "expected_output":  "High urgency incident ticket generated and immediate notification sent to #incident-alerts Slack channel.",
+        "context":  [
+                        "P1 - Critical: Production down, webhook loss, database unavailable. Response target: \u003c 15 mins. Escalated to on-call Slack."
+                    ],
+        "intent":  "TECHNICAL_BUG",
+        "urgency":  "HIGH",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-025",
+        "category":  "REFUND",
+        "input":  "We were double billed on invoice INV-7721 for our monthly Professional tier.",
+        "expected_output":  "We have created a billing support ticket to investigate the double charge and initiate a refund back to your payment card.",
+        "context":  [
+                        "Refunds are credited back to the original payment method (Credit Card, Debit Card, or UPI) within 5-7 business days after approval.",
+                        "An automated support ticket must be generated with category BILLING_REFUND."
+                    ],
+        "intent":  "BILLING_REFUND",
+        "urgency":  "MEDIUM",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-026",
+        "category":  "PRICING",
+        "input":  "Does the Professional plan include Slack support?",
+        "expected_output":  "Yes, the Professional Plan ($99/mo) includes priority email and Slack community support with a response target within 4 business hours.",
+        "context":  [
+                        "Professional Plan ($99/month or $990/year) includes Priority email and Slack community support (response within 4 business hours)."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-027",
+        "category":  "PRICING",
+        "input":  "How many seats are included in the Professional tier?",
+        "expected_output":  "The Professional Plan includes 25 active team seats.",
+        "context":  [
+                        "Professional Plan ($99/month or $990/year) includes 25 active team seats and 100,000 monthly automation workflow executions."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-028",
+        "category":  "INCIDENT",
+        "input":  "API latency has spiked to over 15 seconds per request across all endpoints.",
+        "expected_output":  "High-urgency technical bug ticket generated and sent to engineering Slack for performance investigation.",
+        "context":  [
+                        "Priority 2 (High / Degraded Performance): First response \u003c 1 hour.",
+                        "An incident ticket MUST be filed in Jira/CRM under INCIDENT_TECHNICAL."
+                    ],
+        "intent":  "TECHNICAL_BUG",
+        "urgency":  "HIGH",
+        "ticket_expected":  true
+    },
+    {
+        "id":  "GOLDEN-029",
+        "category":  "SUPPORT",
+        "input":  "What channels are available for emergency escalation on the Enterprise plan?",
+        "expected_output":  "Enterprise customers receive 24/7 emergency escalation via Phone, WhatsApp, and PagerDuty.",
+        "context":  [
+                        "Enterprise Plan includes 24/7 Phone, WhatsApp, and PagerDuty emergency escalation with 99.9% uptime SLA."
+                    ],
+        "intent":  "INQUIRY",
+        "urgency":  "LOW",
+        "ticket_expected":  false
+    },
+    {
+        "id":  "GOLDEN-030",
+        "category":  "REFUND",
+        "input":  "Can I request a refund through WhatsApp support?",
+        "expected_output":  "Yes, refund requests sent through WhatsApp or Email are automatically processed with a billing ticket.",
+        "context":  [
+                        "An automated support ticket must be generated with category BILLING_REFUND to trigger payment gateway reconciliation."
+                    ],
+        "intent":  "BILLING_REFUND",
+        "urgency":  "MEDIUM",
+        "ticket_expected":  true
+    }
+]

@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+reports/*.html
+reports/*.md
+!reports/.gitkeep
+
+# Environment & Secrets
+.env
+*.db
+*.sqlite3
+
+# Playwright
+test-results/
+playwright-report/
+
+# OS Specific
+.DS_Store
+Thumbs.db

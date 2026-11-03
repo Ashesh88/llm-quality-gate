@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomous AI Operations Agent | LangGraph + RAG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111726;
+      --card-border: #1e293b;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #06b6d4;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(17, 23, 38, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #6366f1, #06b6d4);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .status-pill {
+      font-size: 0.8rem;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      padding: 0.3rem 0.8rem;
+      border-radius: 9999px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.9); }
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-main);
+    }
+
+    /* Quick Preset Buttons */
+    .presets {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .preset-btn {
+      background: #1a2234;
+      border: 1px solid #28354d;
+      color: #cbd5e1;
+      padding: 0.55rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .preset-btn:hover {
+      background: #232d45;
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      background: #0b101c;
+      border: 1px solid #243048;
+      color: white;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      transition: border 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), #4338ca);
+      color: white;
+      border: none;
+      padding: 0.85rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.2s;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    /* Right Column: Execution Traces */
+    .execution-view {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .trace-box {
+      background: #090e1a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.825rem;
+      line-height: 1.6;
+      max-height: 230px;
+      overflow-y: auto;
+      color: #93c5fd;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .badge-p1 { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; }
+    .badge-p2 { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid #f59e0b; }
+    .badge-p3 { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid #10b981; }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .info-card {
+      background: #141c2e;
+      border: 1px solid #222f47;
+      border-radius: 10px;
+      padding: 1rem;
+    }
+
+    .info-card h4 {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .response-preview {
+      background: #0b101c;
+      border: 1px solid #222f47;
+      border-radius: 10px;
+      padding: 1rem;
+      white-space: pre-wrap;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+
+    /* Bottom Tickets Table */
+    .tickets-section {
+      grid-column: 1 / -1;
+      margin-top: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.75rem;
+      background: #141c2e;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--card-border);
+      font-weight: 600;
+    }
+
+    td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #1a2336;
+      color: #cbd5e1;
+    }
+
+    tr:hover td {
+      background: #141c2e;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-badge">LangGraph 1.2</div>
+      <h1>Autonomous AI Operations Agent</h1>
+    </div>
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      <span>FastAPI Webhook Live</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Left Column: Trigger Form -->
+    <div class="card">
+      <div class="card-title">⚡ Trigger Incoming Event</div>
+      
+      <label>Quick Test Scenarios:</label>
+      <div class="presets">
+        <button class="preset-btn" onclick="loadPreset('outage')">
+          <span>🚨 P1 Outage (500 Error Webhook)</span>
+          <span style="color:#ef4444; font-size:0.75rem">Ticket + Slack</span>
+        </button>
+        <button class="preset-btn" onclick="loadPreset('refund')">
+          <span>💳 Starter Plan Refund Request</span>
+          <span style="color:#f59e0b; font-size:0.75rem">RAG + Billing Ticket</span>
+        </button>
+        <button class="preset-btn" onclick="loadPreset('pricing')">
+          <span>💼 Enterprise Pricing & SLA Query</span>
+          <span style="color:#10b981; font-size:0.75rem">RAG Direct</span>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label>Channel</label>
+        <select id="channel">
+          <option value="email">Email (Structured & Formal)</option>
+          <option value="whatsapp">WhatsApp (Concise & Conversational)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Customer / Sender</label>
+        <input type="text" id="sender" value="alex@techstart.io" />
+      </div>
+
+      <div class="form-group" id="subject-group">
+        <label>Subject</label>
+        <input type="text" id="subject" value="URGENT: Webhook returns 500 error on production" />
+      </div>
+
+      <div class="form-group">
+        <label>Incoming Message Body</label>
+        <textarea id="body">Our production payment webhook started returning 500 internal server error 15 minutes ago. Transactions are getting dropped!</textarea>
+      </div>
+
+      <button class="btn-submit" onclick="dispatchAgent()">
+        🚀 Run LangGraph Autonomous Agent
+      </button>
+    </div>
+
+    <!-- Right Column: Visual Execution Trace -->
+    <div class="execution-view">
+      <div class="card">
+        <div class="card-title" style="justify-content: space-between;">
+          <span>🔍 LangGraph State Execution Trace</span>
+          <span id="latency-tag" style="font-size:0.75rem; color:var(--accent);">Ready</span>
+        </div>
+        <div class="trace-box" id="trace-terminal">
+          // Awaiting event trigger...
+          // Click any preset on the left or press "Run LangGraph Autonomous Agent"
+        </div>
+
+        <div class="result-grid" style="margin-top: 1.25rem;">
+          <div class="info-card">
+            <h4>Support Ticket Created</h4>
+            <div id="ticket-result" style="font-weight:700; color:#cbd5e1;">None yet</div>
+          </div>
+          <div class="info-card">
+            <h4>Slack Incident Dispatch</h4>
+            <div id="slack-result" style="font-weight:700; color:#cbd5e1;">None yet</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.25rem;">
+          <h4 style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; margin-bottom:0.5rem;">
+            Generated Customer Response
+          </h4>
+          <div class="response-preview" id="response-preview">
+            Awaiting response generation...
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom: Live Tickets Table -->
+    <div class="card tickets-section">
+      <div class="card-title" style="justify-content: space-between;">
+        <span>🎫 Active Operations Tickets (SQLite / Jira Simulator)</span>
+        <button onclick="fetchTickets()" style="background:#1a2234; border:1px solid #28354d; color:#94a3b8; padding:0.3rem 0.6rem; border-radius:6px; cursor:pointer;">Refresh</button>
+      </div>
+      <table id="tickets-table">
+        <thead>
+          <tr>
+            <th>Key</th>
+            <th>Customer</th>
+            <th>Category</th>
+            <th>Priority</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody id="tickets-body">
+          <tr><td colspan="7" style="text-align:center; color:#64748b;">Loading tickets...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    const presets = {
+      outage: {
+        channel: 'email',
+        sender: 'cto@fintechflow.com',
+        subject: 'URGENT: 500 Internal Server error on webhook dispatch',
+        body: 'All our incoming webhooks are failing with 500 error since 20 minutes. Transactions are stuck!'
+      },
+      refund: {
+        channel: 'whatsapp',
+        sender: '+919140382381',
+        subject: 'Refund Request',
+        body: 'Hey team, I purchased the starter plan 3 days ago. Would like to claim the 14-day money back guarantee refund.'
+      },
+      pricing: {
+        channel: 'email',
+        sender: 'sarah@enterprisecorp.com',
+        subject: 'Enterprise Plan & SLA Inquiry',
+        body: 'Could you share details on custom enterprise pricing, uptime SLA guarantees, and dedicated support options?'
+      }
+    };
+
+    function loadPreset(key) {
+      const p = presets[key];
+      document.getElementById('channel').value = p.channel;
+      document.getElementById('sender').value = p.sender;
+      document.getElementById('subject').value = p.subject;
+      document.getElementById('body').value = p.body;
+      toggleSubject();
+    }
+
+    document.getElementById('channel').addEventListener('change', toggleSubject);
+    function toggleSubject() {
+      const isEmail = document.getElementById('channel').value === 'email';
+      document.getElementById('subject-group').style.display = isEmail ? 'block' : 'none';
+    }
+
+    async function dispatchAgent() {
+      const channel = document.getElementById('channel').value;
+      const sender = document.getElementById('sender').value;
+      const body = document.getElementById('body').value;
+      const subject = document.getElementById('subject').value;
+
+      const terminal = document.getElementById('trace-terminal');
+      terminal.innerHTML = `> Dispatched event via [/${channel === 'email' ? 'webhook/email' : 'webhook/whatsapp'}]...\n> Executing LangGraph state graph...`;
+
+      const endpoint = channel === 'email' ? '/webhook/email' : '/webhook/whatsapp';
+      const payload = channel === 'email' 
+        ? { sender, subject, body }
+        : { sender, message: body };
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        
+        // Update trace box
+        terminal.innerHTML = data.trace_steps.join('\n');
+        document.getElementById('latency-tag').innerText = `⚡ ${data.latency_ms} ms`;
+
+        // Update Ticket preview
+        const ticketDiv = document.getElementById('ticket-result');
+        if (data.ticket) {
+          ticketDiv.innerHTML = `<span class="badge ${data.urgency === 'HIGH' ? 'badge-p1' : 'badge-p2'}">${data.ticket.ticket_key}</span> (${data.ticket.priority})`;
+        } else {
+          ticketDiv.innerHTML = `<span style="color:#64748b;">No escalation required</span>`;
+        }
+
+        // Update Slack preview
+        const slackDiv = document.getElementById('slack-result');
+        if (data.slack) {
+          slackDiv.innerHTML = `<span style="color:#10b981;">✅ Sent to #${data.slack.channel}</span>`;
+        } else {
+          slackDiv.innerHTML = `<span style="color:#64748b;">None</span>`;
+        }
+
+        // Update Response preview
+        document.getElementById('response-preview').innerText = data.response;
+
+        // Refresh tickets table
+        fetchTickets();
+
+      } catch (err) {
+        terminal.innerHTML += `\n❌ Error executing agent: ${err.message}`;
+      }
+    }
+
+    async function fetchTickets() {
+      try {
+        const res = await fetch('/api/tickets');
+        const tickets = await res.json();
+        const tbody = document.getElementById('tickets-body');
+        
+        if (tickets.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#64748b;">No tickets logged yet.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = tickets.map(t => `
+          <tr>
+            <td><strong style="color:#818cf8;">${t.ticket_key}</strong></td>
+            <td>${t.customer_id}</td>
+            <td>${t.category}</td>
+            <td><span class="badge ${t.priority === 'HIGH' || t.priority === 'CRITICAL' ? 'badge-p1' : (t.priority === 'MEDIUM' ? 'badge-p2' : 'badge-p3')}">${t.priority}</span></td>
+            <td>${t.title}</td>
+            <td><span style="color:#10b981;">● ${t.status}</span></td>
+            <td style="font-size:0.75rem; color:#64748b;">${new Date(t.created_at).toLocaleTimeString()}</td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchTickets();
+  </script>
+</body>
+</html>

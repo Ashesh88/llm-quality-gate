@@ -15,7 +15,7 @@ from framework.config import config
 def load_dataset(filepath: str) -> List[Dict[str, Any]]:
     if not os.path.exists(filepath):
         return []
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, "r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 def save_dataset(filepath: str, data: List[Dict[str, Any]]) -> None:

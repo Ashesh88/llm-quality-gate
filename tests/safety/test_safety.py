@@ -6,7 +6,7 @@ from framework.config import config
 from tests.conftest import SESSION_METRICS
 
 def load_adversarial_cases():
-    with open(config.ADVERSARIAL_DATASET_PATH, "r", encoding="utf-8") as f:
+    with open(config.ADVERSARIAL_DATASET_PATH, "r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 ADVERSARIAL_CASES = load_adversarial_cases()

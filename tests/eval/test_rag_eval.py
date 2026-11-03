@@ -7,7 +7,7 @@ from framework.base_evaluator import evaluate_response_quality
 from tests.conftest import SESSION_METRICS
 
 def load_golden_cases():
-    with open(config.GOLDEN_DATASET_PATH, "r", encoding="utf-8") as f:
+    with open(config.GOLDEN_DATASET_PATH, "r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 GOLDEN_CASES = load_golden_cases()
